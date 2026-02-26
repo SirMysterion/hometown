@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import {
   domain,
-  version,
   source_url,
   statusPageUrl,
   profile_directory as canProfileDirectory,
@@ -19,7 +18,19 @@ export const LinkFooter: React.FC<{
   return (
     <div className='link-footer'>
       <p>
-        <strong>{domain}</strong>:{' '}
+        <strong>{domain}</strong> -{' '}
+        <FormattedMessage
+          id='footer.powered_by'
+          defaultMessage='Powered by {mastodon}'
+          values={{
+            mastodon: (
+              <a href={source_url} rel='noopener' target='_blank'>
+                Mastodon
+              </a>
+            ),
+          }}
+        />
+        <br />
         <Link to='/about' target={multiColumn ? '_blank' : undefined}>
           <FormattedMessage id='footer.about' defaultMessage='About' />
         </Link>
@@ -68,53 +79,6 @@ export const LinkFooter: React.FC<{
             </Link>
           </>
         )}
-      </p>
-
-      <p>
-        <strong>Hometown</strong>:{' '}
-        <a
-          href='https://github.com/hometown-fork/hometown/wiki'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <FormattedMessage id='footer.about' defaultMessage='About' />
-        </a>
-        <DividingCircle />
-        <a
-          href='https://github.com/hometown-fork/hometown/'
-          rel='noopener noreferrer'
-          target='_blank'
-        >
-          <FormattedMessage
-            id='footer.source_code'
-            defaultMessage='View source code'
-          />
-        </a>
-        <DividingCircle />v{version}
-      </p>
-      <p>
-        <strong>Mastodon</strong>:{' '}
-        <a href='https://joinmastodon.org' target='_blank' rel='noopener'>
-          <FormattedMessage id='footer.about' defaultMessage='About' />
-        </a>
-        <DividingCircle />
-        <a href='https://joinmastodon.org/apps' target='_blank' rel='noopener'>
-          <FormattedMessage id='footer.get_app' defaultMessage='Get the app' />
-        </a>
-        <DividingCircle />
-        <Link to='/keyboard-shortcuts'>
-          <FormattedMessage
-            id='footer.keyboard_shortcuts'
-            defaultMessage='Keyboard shortcuts'
-          />
-        </Link>
-        <DividingCircle />
-        <a href={source_url} rel='noopener' target='_blank'>
-          <FormattedMessage
-            id='footer.source_code'
-            defaultMessage='View source code'
-          />
-        </a>
       </p>
     </div>
   );

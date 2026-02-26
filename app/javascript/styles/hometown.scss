@@ -81,3 +81,11 @@
     font-style: italic;
   }
 }
+
+// Footer and mobile logo customizations
+// Hide logo icon on mobile screens
+@media (max-width: 768px) {
+  .logo--icon {
+    display: none;
+  }
+}
