@@ -20,7 +20,7 @@ class UserSettings
   # Hometown-specific: Opt-out of RSS feeds for public posts
   setting :norss, default: false
   # Hometown: New posts should federate by default
-  setting :default_federation, default: true
+  setting :default_federation, default: -> { ::Setting.default_federation }
 
   setting_inverse_alias :indexable, :noindex
 
