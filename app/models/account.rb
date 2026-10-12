@@ -473,6 +473,11 @@ class Account < ApplicationRecord
 
   before_validation :prepare_contents, if: :local?
   before_create :generate_keys
+  # Hometown: new local accounts are discoverable (featured in the directory
+  # and discovery experiences) by default, opt-out instead of opt-in. Remote
+  # accounts are left alone, since their discoverable flag should reflect
+  # whatever their own server reports.
+  before_create :set_default_discoverable, if: -> { local? && discoverable.nil? && !bot? }
   before_destroy :clean_feed_manager
 
   def ensure_keys!
@@ -507,6 +512,10 @@ class Account < ApplicationRecord
     return if local?
 
     super
+  end
+
+  def set_default_discoverable
+    self.discoverable = true
   end
 
   def emojifiable_text
