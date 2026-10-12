@@ -4,7 +4,11 @@ module AccountOwnedConcern
   extend ActiveSupport::Concern
 
   included do
-    before_action :authenticate_user!, if: -> { limited_federation_mode? && request.format != :json }
+    # Hometown: require a logged-in session to browse accounts/statuses/collections
+    # over HTML or RSS, so anonymous bots/crawlers can't enumerate local users or
+    # their posts. The ActivityPub JSON format is left open so federation with
+    # other servers keeps working.
+    before_action :authenticate_user!, if: -> { request.format != :json }
     before_action :set_account, if: :account_required?
     before_action :check_account_approval, if: :account_required?
     before_action :check_account_suspension, if: :account_required?

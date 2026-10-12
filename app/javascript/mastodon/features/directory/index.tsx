@@ -22,7 +22,9 @@ import { LoadMore } from 'mastodon/components/load_more';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import { RadioButton } from 'mastodon/components/radio_button';
 import { ScrollContainer } from 'mastodon/containers/scroll_container';
+import { SignInBanner } from 'mastodon/features/navigation_panel/components/sign_in_banner';
 import { useSearchParam } from 'mastodon/hooks/useSearchParam';
+import { me } from 'mastodon/initial_state';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
 import { AccountCard } from './components/account_card';
@@ -88,7 +90,8 @@ export const Directory: React.FC<{
   );
 
   useEffect(() => {
-    void dispatch(fetchDirectory({ order, local }));
+    // Hometown: anonymous users can't fetch the directory, so don't bother.
+    if (me) void dispatch(fetchDirectory({ order, local }));
   }, [dispatch, order, local]);
 
   const handleMove = useCallback(
@@ -208,7 +211,9 @@ export const Directory: React.FC<{
         multiColumn={multiColumn}
       />
 
-      {multiColumn && !pinned ? (
+      {!me ? (
+        <SignInBanner />
+      ) : multiColumn && !pinned ? (
         <ScrollContainer scrollKey='directory'>
           {scrollableArea}
         </ScrollContainer>

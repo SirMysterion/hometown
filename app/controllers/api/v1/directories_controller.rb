@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class Api::V1::DirectoriesController < Api::BaseController
+  # Hometown: require a logged-in user so anonymous bots/crawlers can't
+  # enumerate local accounts via the profile directory.
+  before_action :require_user!
   before_action :require_enabled!
   before_action :set_accounts
 
   def show
-    cache_if_unauthenticated!
     render json: @accounts, each_serializer: REST::AccountSerializer
   end
 
