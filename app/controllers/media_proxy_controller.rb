@@ -8,7 +8,9 @@ class MediaProxyController < ApplicationController
 
   skip_before_action :require_functional!
 
-  before_action :authenticate_user!, if: :limited_federation_mode?
+  # Hometown: media URLs have no ActivityPub JSON format to preserve for
+  # federation, so always require a logged-in session to view them.
+  before_action :authenticate_user!
   before_action :set_media_attachment
 
   rescue_from ActiveRecord::RecordInvalid, Mastodon::NotPermittedError, Mastodon::UnexpectedResponseError, with: :not_found
